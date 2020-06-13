@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}
+@{{ username }}'s Top Posts
+{% endblock title %}
+
+{% block body %}
+
+<!-- <div class="container">
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %} 
+      {% for message in messages %}
+      <div class="alert alert-warning mt-4" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div> -->
+
+{% if profile["error"] %}
+
+<div class="container">
+  <div class="alert alert-warning mt-4" role="alert">
+    {{ profile['message'] }}
+  </div>
+</div>
+
+{% else %}
+<div class="profile mt-4 border-bottom">
+  <div class="container">
+    <div class="row">
+      <div class="col-4 p-3 text-lg-center">
+        <img id="profile-picture" class="rounded-circle img-fluid" src="{{ profile['profile_picture']  }}" alt="Profile Picture">
+      </div>
+      <div class="d-md-none col-8 p-3">
+        <div class="p-2 font-weight-normal" style="font-size: 2rem;">{{ profile['username'] }}</div>
+        
+        <div>
+          <div class="d-flex">
+            <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['posts_count']) }}</span> Posts</div>
+            <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['followers']) }}</span> Followers</div>
+            <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['following']) }}</span> Following</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8 p-3">
+        <span class="d-none d-md-block">
+          <div class="p-2 font-weight-normal" style="font-size: 2rem;">{{ profile['username'] }}</div>
+          
+          <div>
+            <div class="d-flex">
+              <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['posts_count']) }}</span> Posts</div>
+              <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['followers']) }}</span> Followers</div>
+              <div class="p-2"><span class="font-weight-bold">{{ '{:,}'.format(profile['following']) }}</span> Following</div>
+            </div>
+          </div>
+        </span>
+
+        <div class="p-2 font-weight-bold">{{ profile['full_name'] }}</div>
+
+        <div class="p-2">
+          {% for line in profile['bio'].split('\n') %}
+            {{ line }}<br>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- <div class="container mt-4">
+  <div class="d-flex justify-content-center">
+    <a class="btn btn-outline-primary" href="{{ url_for('download_file') }}" role="button">Download as Excel</a>
+  </div>
+</div> -->
+
+<!-- Removes filter buttons for now until they are fixed
+<div class="filters-div mt-4">
+  <div class="container text-center">
+    <div id="filterButtons" class="btn-group btn-group-lg" role="group" aria-label="Filter buttons group">
+      <button type="button" class="btn btn-primary" onclick="filterSelection('all')">All</button>
+      <button type="button" class="btn btn-secondary" onclick="filterSelection('Photo')">Pictures</button>
+      <button type="button" class="btn btn-secondary" onclick="filterSelection('Video')">Videos</button>
+      <button type="button" class="btn btn-secondary" onclick="filterSelection('Carousel')">Carousels</button>
+    </div>
+  </div>
+</div> -->
+
+<div class="container mt-4">
+
+  <div class="grid">
+      {% for post in data %}
+        
+        <div class="grid-item card {% if loop.index == 1 %} grid-sizer {% endif %}" style="padding: 0;">
+          <div class="post-thumbnail">
+            {% if post['media_type'] == 'Carousel' %}
+            <img class="post_icon" src="{{ url_for('static', filename='imgs/carousel_icon.png') }}" alt="Carousel Icon">
+            {% endif %}
+            {% if post['media_type'] == 'Video' %}
+            <i class="fas fa-video post_icon"></i>
+            {% endif %}
+            <img class="card-img-top" src="{{ post['thumbnail'] }}" alt="Post thumbnail">
+            <div class="post-img-cover">
+              <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                <a class="btn btn-primary" href="{{ post['link'] }}" target="_blank">Go To Post</a>
+                <!-- <button type="button" class="btn btn-primary ml-3 download-post-btn" data-link="{{ post['link'] }}" data-number={{ loop.index }}>Download</button> -->
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-body">
+            <p class="card-title">
+              <a href="{{ post['link'] }}" target="_self">{{ post["media_type"] }}</a> ·
+              <strong>{{ '{:,}'.format(post["likes"]) }} likes</strong>
+              {% if post["media_type"] == "Video" %}
+                ({{ '{:,}'.format(post["views"]) }} views)
+              {% endif %}
+              | {{ '{:,}'.format(post["comments"]) }} comments
+            </p>
+            <div class="card-text text-muted">  <!-- optional class: caption-overflow -->
+                {% for line in post['caption'].split('\n') %}
+                  {{ line }}<br>
+                {% endfor %}
+            </div>
+          </div>
+          <div class="card-footer">
+            {{ post["published_date"] }}
+          </div>
+        </div>
+
+    {% endfor %}
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/posts.js') }}"></script>
+{% endblock body %}

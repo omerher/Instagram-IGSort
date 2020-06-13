@@ -1,0 +1,113 @@
+body {
+    overflow-x: hidden;
+}
+
+#loadingButton {
+    display: none;
+    cursor: default;
+}
+
+#profile-picture {
+    width: 150px;
+}
+
+@media (min-width: 768px) {
+    #profile-picture {
+        width: 200px;
+    }
+}
+
+.filterDiv {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.post-thumbnail {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #dee2e6;
+    position: relative;
+    border-top-left-radius: 0.1875rem;
+    border-top-right-radius: 0.1875rem;
+    overflow: hidden;
+}
+
+.post-img-cover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.65);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.post-thumbnail:hover .post-img-cover {
+    opacity: 1;
+}
+
+.caption-overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* -----
+SVG Icons - svgicons.sparkk.fr
+----- */
+
+.svg-icon {
+    width: 1em;
+    height: 1em;
+}
+  
+.svg-icon path, .svg-icon polygon, .svg-icon rect {
+    fill: #4691f6;
+}
+  
+.svg-icon circle {
+    stroke: #4691f6;
+    stroke-width: 1;
+  }
+
+.grid-item {
+    margin-bottom: 20px;
+}
+
+@media (min-width: 576px) {
+    .grid-item {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .grid-item {
+        width: 48%;
+    }
+}
+
+@media (min-width: 992px) {
+    .grid-item {
+        width: 31%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .grid-item {
+        width: 32%;
+    }
+}
+
+.post_icon {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 10px;
+    top: 10px;
+    color: white;
+}
